@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_travel_booking_tree" model="ir.ui.view">
+        <field name="name">travel.booking.tree</field>
+        <field name="model">travel.booking</field>
+        <field name="arch" type="xml">
+            <tree string="Package">
+                <field name="customer_id"/>
+                <field name="package_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_travel_booking_form" model="ir.ui.view">
+        <field name="name">travel.booking.form</field>
+        <field name="model">travel.booking</field>
+        <field name="arch" type="xml">
+            <form string="Package">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="package_id"/>
+                            <field name ="booking_date"/>
+                            <field name="travel_date"/>
+                            <field name ="num_people"/>
+                            <field name ="total_price"/>
+                            <field name = "status"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="action_travel_booking" model="ir.actions.act_window">
+        <field name="name">Travel</field>
+        <field name="res_model">travel.booking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+        <!-- Menu Items -->
+    <menuitem id="menu_travel_booking" name="Travel booking" parent="menu_travel_root" action="action_travel_booking"/>
+
+</odoo>
+

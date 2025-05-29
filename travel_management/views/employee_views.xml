@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<!-- tree view -->
+<record id="view_employee_info_tree" model="ir.ui.view">
+        <field name="name">employee.info.tree</field>
+        <field name="model">employee.info</field>
+        <field name="arch" type="xml">
+            <tree string="Employee">
+                <field name="name"/>
+                <field name="phone"/>
+                <field name ="address"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- form view -->
+
+    <record id="view_employee_info_form" model="ir.ui.view">
+        <field name="name">employee.info.form</field>
+        <field name="model">employee.info</field>
+        <field name="arch" type="xml">
+            <form string="Employee">
+                <sheet>
+                <header>
+                    <button name="action_create_record"
+                            type="object"
+                            string="Create"
+                            class="btn-primary"/>
+
+                    <button name="action_write_record"
+                            type="object"
+                            string="Write"
+                            class="btn-primary"/>
+
+                    <button name="action_unlink_record"
+                            type="object"
+                            string="Unlink"
+                            class="btn-danger"/>
+
+                    <button name="action_browse_record"
+                            type="object"
+                            string="Browse"
+                            class="btn-info"/>
+
+                    <button name="action_search_record"
+                            type="object"
+                            string="Search"
+                            class="btn-secondary"/>
+
+                    <button name="action_search_count" 
+                            type="object" 
+                            string="Search Count" 
+                            class="btn btn-primary"/>
+
+                    <button name="action_copy_record" 
+                            type="object" 
+                            string="Copy" 
+                            class="btn btn-primary"/>
+
+                    <button name="action_read_fields" 
+                            type="object" 
+                            string="Read" 
+                            class="btn btn-primary"/>
+
+                    <button name="action_check_exists" 
+                            type="object" 
+                            string="Check exists" 
+                            class="btn btn-primary"/>
+
+
+               </header>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="phone"/>
+                            <field name ="address"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- kanban view -->
+
+    <record id="view_employee_info_kanban" model="ir.ui.view">
+    <field name="name">employee.info.kanban</field>
+    <field name="model">employee.info</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile">
+            <field name="name"/>
+            <field name="phone"/>
+            <field name="address"/>
+            
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click o_kanban_record">
+                        <!-- <div class="o_kanban_details"> -->
+                            <strong><field name="name"/></strong><br/>
+                            <span><field name="phone"/></span><br/>
+                            <span><field name="address"/></span>
+                        <!-- </div> -->
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+<!-- pivot view -->
+
+   <record id="view_employee_info_pivot" model="ir.ui.view">
+        <field name="name">employee.info.pivot</field>
+        <field name="model">employee.info</field>
+        <field name="arch" type="xml">
+            <pivot string="Employee Info" sample="1">
+                <field name="name" type="row"/>
+                <field name="phone" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+
+    <!-- Graph view -->
+
+    <record id="view_employee_info_graph" model="ir.ui.view">
+        <field name="name">employee.info.graph</field>
+        <field name="model">employee.info</field>
+        <field name="arch" type="xml">
+            <graph string="Employee Info" sample="1">
+                <field name="name"/>
+                <field name="phone" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Calender view -->
+
+    <!-- <record id="view_employee_info_calendar" model="ir.ui.view">
+        <field name="name">employee.info.calendar</field>
+        <field name="model">employee.info</field>
+        <field name="arch" type="xml">
+            <calendar string="Employee Info" create="0" mode="month" event_limit="5" quick_create="0">
+                <field name="name" invisible="1"/>
+                <field name="phone" filters="1" invisible="1"/>
+                <field name="name" avatar_field="avatar_128" options="{'icon': 'fa fa-users'}"/>
+                <field name="phone" widget="monetary"/>
+                <field name="address"/>
+            </calendar>
+        </field>
+    </record> -->
+
+
+
+
+
+
+    <record id="action_employee_info" model="ir.actions.act_window">
+        <field name="name">Employee</field>
+        <field name="res_model">employee.info</field>
+        <field name="view_mode">tree,kanban,pivot,graph,form</field>
+    </record>
+
+        <!-- Menu Items -->
+    <menuitem id="menu_employee_info" name="Employee info" parent="menu_travel_root" action="action_employee_info"/>
+
+</odoo>
+
