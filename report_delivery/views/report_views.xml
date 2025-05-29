@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_product_form_cartoon_capacity" model="ir.ui.view">
+    <field name="name">product.product.form.inherit.cartoon.capacity</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_normal_form_view" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='barcode']" position="after">
+        <field name="cartoon_capacity" />
+      </xpath>
+    </field>
+  </record>
+
+
+  <record id="view_company_form_inherit_qr" model="ir.ui.view">
+    <field name="name">res.company.form.qr.image</field>
+    <field name="model">res.company</field>
+    <field name="inherit_id" ref="base.view_company_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='currency_id']" position="after">
+        <field name="qr_image" widget="image" class="oe_avatar"
+          options="{'preview_image': 'qr_image'}" />
+      </xpath>
+    </field>
+  </record>
+
+</odoo>
+
+

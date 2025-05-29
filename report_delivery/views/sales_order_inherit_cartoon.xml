@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_order_form_inherit_carton_qty" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit.carton.qty</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+            <field name="carton_qty" readonly="1"/>
+        </xpath>
+    </field>
+</record>
+
+<record id="view_order_form_inherit_discount_amount" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit.discount.amount</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="after">
+            <field name="discount_amount"/>
+        </xpath>
+    </field>
+</record>
+
+
+</odoo>

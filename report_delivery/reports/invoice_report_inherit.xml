@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<odoo>
+    <template id="invoice_report_inherit" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_quantity']"
+            position="after">
+            <th name="th_sm_note" class="text-end">Cartoon Quantity</th>
+
+          </xpath>
+
+        <xpath expr="//table[@name='invoice_line_table']//td[@name='td_quantity']"
+            position="after">
+
+
+            <td name="td_cartoon_qty" class="text-end">
+                 <span t-esc="line.quantity / (line.product_id.cartoon_capacity or 1)" />
+            </td>
+
+        </xpath>
+
+        
+        <xpath expr="//div[@name='comment']" position="after">
+            <div style="margin-top: 200px; text-align: center;">
+                <div
+                    style="display: inline-block; width: 30%; margin-left: 0px; margin-right: 40px;">
+                    <div style="font-weight: bold;">Received by</div>
+                </div>
+
+                <div style="display: inline-block; width: 30%; margin-left: 0px;">
+                    <div style="font-weight: bold;">Delivered by</div>
+                </div>
+
+                <div style="display: inline-block; width: 30%; margin-left: 20px;">
+                    <div style="font-weight: bold;">Accountant by</div>
+                </div>
+            </div>
+        </xpath>
+                
+       
+    </template>
+</odoo>
+
+
+
+ 

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="delivery_report_inherit" inherit_id="stock.report_delivery_document">
+
+
+ 
+  
+        <!-- Step 1: Hide original Shipping Date -->
+        <xpath expr="//div[@name='div_sched_date']" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+
+
+        <!-- Step 2: Add Sales Order Date -->
+
+        <xpath expr="//div[@name='div_sched_date']" position="before">
+            <div t-if="o.sale_id" class="col-auto col-3 mw-100 mb-2" name="div_sales_order_date">
+                <strong>Shipping Date</strong>
+                <t t-if="o.sale_id.date_order" t-esc="o.sale_id.date_order.strftime('%d-%m-%Y')" />
+            </div>
+
+        </xpath>
+        <xpath expr="//table[@name='stock_move_table']" position="before">
+
+            <table class="table table-sm" name="stock_move_table_all">
+                <thead>
+                    <tr>
+                        <th name="th_sm_product">
+                            <strong>Product</strong>
+                        </th>
+                        <th name="th_sm_ordered" class="text-end">
+                            <strong>Ordered</strong>
+                        </th>
+                        <th name="th_sm_quantity" class="text-end">
+                            <strong>Delivered</strong>
+                        </th>
+                        <th name="th_sm_note" class="text-end">Cartoon Capacity</th>
+                        <th name="th_sm_note" class="text-end">Cartoon Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="lines"
+                        t-value="o.move_ids.filtered(lambda x: x.product_uom_qty)" />
+                    <t t-set="total_qty" t-value="0" />
+                    <t t-set="total_done_qty" t-value="0" />
+                    <t t-set="total_capacity" t-value="0" />
+                    <t t-set="total_crtn_capacity" t-value="0" />
+                    <tr t-foreach="lines" t-as="move">
+                        <t t-set="capacity" t-value="move.product_id.cartoon_capacity or 1" />
+                        <td>
+                            <span t-field="move.product_id">Customizable Desk</span>
+                            <p
+                                t-if="move.description_picking and move.description_picking != move.product_id.name and move.description_picking != move.product_id.display_name">
+                                <span t-field="move.description_picking">Description on
+                                    transfer</span>
+                            </p>
+                        </td>
+                        <td class="text-end">
+                            <span t-field="move.product_uom_qty">3.00</span>
+                            <span t-field="move.product_uom" groups="uom.group_uom">units</span>
+                            <span t-if="move.product_packaging_id"> (<span
+                                    t-field="move.product_packaging_qty"
+                                    t-options='{"widget": "integer"}' /> <span
+                                    t-field="move.product_packaging_id" />) </span>
+                            <t t-set="total_qty" t-value="total_qty + move.product_uom_qty" />
+
+                        </td>
+                        <td class="text-end">
+                            <span t-field="move.quantity">3.00</span>
+                            <span t-field="move.product_uom" groups="uom.group_uom">units</span>
+                            <span t-if="move.product_packaging_id"> (<span
+                                    t-field="move.product_packaging_quantity"
+                                    t-options='{"widget": "integer"}' /> <span
+                                    t-field="move.product_packaging_id" />) </span>
+                            <t t-set="total_done_qty" t-value="total_done_qty + move.quantity" />
+
+                        </td>
+                        <td name="td_sm_cartoon_qty" class="text-end">
+                            <t>
+                                <t t-esc="capacity" />
+                            </t>
+                            <t t-set="total_capacity" t-value="capacity + total_capacity" />
+                        </td>
+
+                        <td name="td_sm_cartoon_qty" class="text-end">
+                            <t>
+                                <t t-esc="round(move.quantity / capacity)" />
+                            </t>
+                            <t t-set="total_crtn_capacity"
+                                t-value="round(move.quantity / capacity) + total_crtn_capacity" />
+
+                        </td>
+                    </tr>
+
+                </tbody>
+                <tr>
+                    <td class="text-start">
+                        <strong>Total</strong>
+                    </td>
+                    <td class="text-end">
+                        <t t-esc="total_qty" />
+                    </td>
+                    <td class="text-end">
+                        <t t-esc="total_done_qty" />
+                    </td>
+                    <td class="text-end">
+                        <t t-esc="total_capacity" />
+                    </td>
+                    <td class="text-end">
+                        <t t-esc="total_crtn_capacity" />
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+
+
+
+
+        <!-- before validate -->
+
+        <xpath expr="//table[@name='stock_move_table']"
+            position="attributes">
+            <attribute name="style">display: none;</attribute>
+
+        </xpath>
+
+
+        <!-- Replace korte hobe -->
+
+        <!-- after validate -->
+
+        <xpath expr="//table[@name='stock_move_line_table']"
+            position="attributes">
+            <attribute name="style">display: none;</attribute>
+
+        </xpath>
+
+
+        <!-- before validate -->
+
+        <!-- <xpath expr="//table[@name='stock_move_table']/tbody/tr" position="inside">
+        <td name="td_sm_cartoon_qty" class="text-end">
+            <t t-set="capacity" t-value="move.product_id.cartoon_capacity or 1" />
+            <t>
+                <t t-esc="capacity" />
+                </t>
+                </td>
+                
+            <td name="td_sm_cartoon_qty" class="text-end">
+                <t t-set="capacity" t-value="move.product_id.cartoon_capacity or 1" />
+                <t>
+                    <t t-esc="round(move.quantity / capacity)" />
+                    </t>
+                    </td>
+                    
+                    </xpath> -->
+
+
+        <!-- after validate -->
+
+        <!-- <xpath expr="//table[@name='stock_move_line_table']/tbody/tr" position="inside">
+                        <td name="td_sm_cartoon_qty" class="text-end">
+                <t t-set="capacity" t-value="move.product_id.cartoon_capacity or 1"/>
+                <t>
+                    <t t-esc="capacity"/>
+                    </t>
+                    </td>
+
+                    <td name="td_sm_cartoon_qty" class="text-end">
+                        <t t-set="capacity" t-value="move.product_id.cartoon_capacity or 1"/>
+                        <t>
+                            <t t-esc="round(move.quantity / capacity)"/>
+                            </t>
+                            </td>
+                            
+                            </xpath> -->
+
+
+        <xpath expr="//div[@class='page']" position="after">
+            <!-- <t t-if="o.company_id.qr_image">
+                <div style="margin-top: 10px;">
+                    <strong>QR Code:</strong>
+                    <br />
+                    <img t-att-src="'data:image/png;base64,%s' % o.company_id.qr_image"
+                        style="max-height: 1000px;" alt="QR Code" />
+                </div>
+            </t> -->
+
+            <div class="page">
+                <div style="margin-top: 200px; text-align: center;">
+                    <div
+                        style="display: inline-block; width: 30%; margin-left: 0px; margin-right: 40px;">
+                        <div style="font-weight: bold;">Received by</div>
+                    </div>
+
+                    <div style="display: inline-block; width: 30%; margin-left: 0px;">
+                        <div style="font-weight: bold;">Delivered by</div>
+                    </div>
+
+                    <div style="display: inline-block; width: 30%; margin-left: 20px;">
+                        <div style="font-weight: bold;">Accountant by</div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+
+    </template>
+</odoo>
